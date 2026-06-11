@@ -9,7 +9,7 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_MODEL = "qwen3:4b"
+DEFAULT_MODEL = "qwen3:8b"
 DEFAULT_BASE_URL = "http://localhost:11434"
 
 

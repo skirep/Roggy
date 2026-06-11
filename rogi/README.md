@@ -2,7 +2,7 @@
 
 **Local-first AI assistant for ASUS ROG Ally Z1 Extreme (Windows, 16 GB RAM)**
 
-ROGI is a fully local, privacy-first AI assistant that runs on your device without sending data to the cloud. It uses [Ollama](https://ollama.com) with the **Qwen3 4B** model and integrates with your emails, pantry, meal planning, and shopping.
+ROGI is a fully local, privacy-first AI assistant that runs on your device without sending data to the cloud. It uses [Ollama](https://ollama.com) with the **Qwen3 8B** model and integrates with your emails, pantry, meal planning, and shopping.
 
 ---
 
@@ -45,7 +45,7 @@ ROGI is a fully local, privacy-first AI assistant that runs on your device witho
 │          │               │               │              │
 │  ┌───────▼──────┐ ┌──────▼──────┐ ┌─────▼──────┐       │
 │  │   Ollama     │ │   SQLite    │ │ Playwright  │       │
-│  │ (qwen3:4b)   │ │ (rogi.db)   │ │ Supermarkets│      │
+│  │ (qwen3:8b)   │ │ (rogi.db)   │ │ Supermarkets│      │
 │  └──────────────┘ └─────────────┘ └────────────┘       │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐    │
@@ -66,9 +66,8 @@ See [docs/installation.md](docs/installation.md) for the full guide.
 # 1. Clone and enter the rogi directory
 cd rogi
 
-# 2. Copy environment file and configure
-Copy-Item .env.example .env
-notepad .env
+# 2. Install everything (venv, deps, Playwright, model)
+.\install.ps1
 
 # 3. Start everything
 .\start.ps1
@@ -121,6 +120,7 @@ rogi/
 ├── Dockerfile
 ├── requirements.txt
 ├── .env.example
+├── install.ps1
 ├── start.ps1
 └── stop.ps1
 ```
@@ -156,7 +156,7 @@ All configuration is done through `.env`. Key variables:
 
 | Variable | Default | Description |
 |---|---|---|
-| `OLLAMA_MODEL` | `qwen3:4b` | Ollama model to use |
+| `OLLAMA_MODEL` | `qwen3:8b` | Ollama model to use |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
 | `DATABASE_PATH` | `rogi.db` | SQLite file path |
 | `TELEGRAM_BOT_TOKEN` | — | Telegram bot token |

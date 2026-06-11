@@ -3,7 +3,7 @@
 ## Design Principles
 
 1. **Local-first** – All data stays on your device. No external APIs except email providers and Telegram.
-2. **Low resource consumption** – Designed for 16 GB RAM; Qwen3 4B uses ~3-4 GB.
+2. **Low resource consumption** – Designed for 16 GB RAM with local Ollama models.
 3. **Modular** – Each feature is a separate Python module. Add supermarkets, agents, or workflows independently.
 4. **Privacy by default** – SQLite keeps all data local. Ollama runs fully offline.
 5. **Never auto-order** – Shopping automation requires explicit user confirmation before checkout.
@@ -50,7 +50,7 @@
          │
  ┌───────▼────────┐
  │  Ollama Client │
- │  (qwen3:4b)    │
+ │  (qwen3:8b)    │
  │  :11434        │
  └────────────────┘
 ```
@@ -170,7 +170,7 @@ ollama pull llama3:8b
 
 | Component | Technology | Purpose |
 |---|---|---|
-| LLM | Ollama (qwen3:4b) | Local inference |
+| LLM | Ollama (qwen3:8b) | Local inference |
 | Chat UI | Open WebUI | Web chat interface |
 | Backend API | FastAPI + uvicorn | REST API |
 | Database | SQLite (WAL) | All persistent data |
