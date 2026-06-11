@@ -1,0 +1,106 @@
+{
+  "name": "ROGI Email Processing",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "name": "Schedule – Every 30 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://rogi-backend:8000/api/email/fetch",
+        "method": "POST"
+      },
+      "name": "Fetch & Classify Emails",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://rogi-backend:8000/api/email/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {"name": "limit", "value": "5"},
+            {"name": "category", "value": "important"}
+          ]
+        }
+      },
+      "name": "Get Important Emails",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.length }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "Has Important Emails?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://rogi-backend:8000/api/chat/",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Summarise important emails in 2 sentences for a Telegram notification."
+            }
+          ]
+        }
+      },
+      "name": "Summarise for Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1120, 200]
+    }
+  ],
+  "connections": {
+    "Schedule – Every 30 min": {
+      "main": [[{"node": "Fetch & Classify Emails", "type": "main", "index": 0}]]
+    },
+    "Fetch & Classify Emails": {
+      "main": [[{"node": "Get Important Emails", "type": "main", "index": 0}]]
+    },
+    "Get Important Emails": {
+      "main": [[{"node": "Has Important Emails?", "type": "main", "index": 0}]]
+    },
+    "Has Important Emails?": {
+      "main": [
+        [{"node": "Summarise for Telegram", "type": "main", "index": 0}],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "tags": ["rogi", "email"],
+  "meta": {
+    "description": "Fetches, classifies and notifies about important emails every 30 minutes"
+  }
+}
