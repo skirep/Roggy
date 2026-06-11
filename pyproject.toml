@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "roggy-meal-planner"
+version = "0.1.0"
+description = "Weekly Meal Planner for the Roggy personal assistant"
+requires-python = ">=3.9"
+
+[project.scripts]
+meal_planner = "meal_planner.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
