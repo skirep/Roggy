@@ -48,7 +48,7 @@ cd rogi
 
 ```powershell
 cd rogi
-# .env is created automatically by install.ps1 if missing
+# install.ps1 creates .env from .env.example when it does not exist
 notepad .env
 ```
 
