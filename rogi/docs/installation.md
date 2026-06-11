@@ -21,7 +21,7 @@
    ```
 3. Pull the default model:
    ```powershell
-   ollama pull qwen3:4b
+   ollama pull qwen3:8b
    ```
 
 ---
@@ -35,26 +35,20 @@ cd Roggy
 
 ---
 
-## Step 3 – Create Python Virtual Environment
+## Step 3 – Run Automatic Installer
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-
-# Install ROGI dependencies
-pip install -r rogi/requirements.txt
-
-# Install Playwright browsers
-playwright install chromium
+cd rogi
+.\install.ps1
 ```
 
 ---
 
-## Step 4 – Configure Environment
+## Step 4 – Configure Environment (optional)
 
 ```powershell
 cd rogi
-Copy-Item .env.example .env
+# .env is created automatically by install.ps1 if missing
 notepad .env
 ```
 
@@ -63,7 +57,7 @@ Minimum required settings for first run:
 ```env
 DATABASE_PATH=rogi.db
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=qwen3:4b
+OLLAMA_MODEL=qwen3:8b
 ```
 
 ### Telegram Setup (optional)
@@ -141,7 +135,7 @@ cd rogi
 
 ROGI is designed for low resource consumption:
 
-- **Qwen3 4B** uses ~3-4 GB RAM when loaded
+- **Qwen3 8B** provides stronger responses but uses more RAM
 - SQLite has no server overhead
 - Background jobs are scheduled (not polling)
 - Playwright only launches when shopping features are used

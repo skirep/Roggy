@@ -18,6 +18,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$defaultModel = "qwen3:8b"
+$envFile = Join-Path $ScriptDir ".env"
+$modelName = $defaultModel
+if (Test-Path $envFile) {
+    $modelLine = Get-Content $envFile | Where-Object { $_ -match '^OLLAMA_MODEL=' } | Select-Object -First 1
+    if ($modelLine) {
+        $modelName = ($modelLine -split '=', 2)[1].Trim()
+    }
+}
 
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "  ROGI – ROG Intelligent Assistant  " -ForegroundColor Cyan
@@ -43,9 +52,9 @@ if ($ollamaProcess) {
     }
 }
 
-# Pull default model if not present
-Write-Host "  Ensuring model qwen3:4b is available..."
-& ollama pull qwen3:4b 2>$null
+# Pull configured model if not present
+Write-Host "  Ensuring model $modelName is available..."
+& ollama pull $modelName 2>$null
 Write-Host "  Model ready." -ForegroundColor Green
 
 # ---------------------------------------------------------------------------
@@ -66,7 +75,6 @@ if ($UseDocker) {
 # ---------------------------------------------------------------------------
 Write-Host "`n[3/5] Starting FastAPI backend..." -ForegroundColor Yellow
 
-$envFile = Join-Path $ScriptDir ".env"
 if (-not (Test-Path $envFile)) {
     Copy-Item (Join-Path $ScriptDir ".env.example") $envFile
     Write-Warning "  .env not found – copied from .env.example. Please configure it."

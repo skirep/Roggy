@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     # Ollama
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen3:4b"
+    ollama_model: str = "qwen3:8b"
 
     # Telegram
     telegram_bot_token: str = ""
